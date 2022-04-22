@@ -28,19 +28,22 @@ create_symlinks() {
 create_symlinks
 
 zshrc() {
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-  git clone https://github.com/wting/autojump.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autojump
-
   # install zsh
   # the yes is to get past a warning related to an existing file in /etc 
   cp /etc/zsh/zlogin /etc/zsh/zlogin.original
   yes | apt-get install zsh
   cp /etc/zsh/zlogin.original /etc/zsh/zlogin
 
+  rm -rf "$HOME/.oh-my-zsh"
+  git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+  git clone https://github.com/wting/autojump.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autojump
+
   cp -r .zshrc ~/.zshrc
   chsh -s /bin/zsh $(whoami)
-  cd /root/.oh-my-zsh/custom/plugins/autojump && ./install.py
+  cd $HOME/.oh-my-zsh/custom/plugins/autojump && ./install.py
 }
 
 cp -r .config/* ~/.config
