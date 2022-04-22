@@ -3,8 +3,8 @@
 # after importing this dotfile repo into a codespace
 
 # tmux and neovim
-sudo apt-get install -y neovim
-sudo apt-get install -y tmux
+apt-get install -y neovim
+apt-get install -y tmux
 
 # install nvim cli for nvim +PlugInstall
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -32,9 +32,15 @@ zshrc() {
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/wting/autojump.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/autojump
 
+  # install zsh
+  # the yes is to get past a warning related to an existing file in /etc 
+  cp /etc/zsh/zlogin /etc/zsh/zlogin.original
+  yes | apt-get install zsh
+  cp /etc/zsh/zlogin.original /etc/zsh/zlogin
+
   cp -r .zshrc ~/.zshrc
-  sudo chsh -s /bin/zsh $(whoami)
-  cd /home/codespace/.oh-my-zsh/custom/plugins/autojump && ./install.py
+  chsh -s /bin/zsh $(whoami)
+  cd /root/.oh-my-zsh/custom/plugins/autojump && ./install.py
 }
 
 cp -r .config/* ~/.config
