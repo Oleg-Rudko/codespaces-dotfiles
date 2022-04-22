@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # this script will be run by codespaces
 # after importing this dotfile repo into a codespace
 
