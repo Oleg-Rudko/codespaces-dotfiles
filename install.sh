@@ -53,7 +53,7 @@ nvim +PlugInstall +qall
 packages() {
   npm install -g neovim
   gem install neovim
-  pip insatll --upgrade pynvim
+  pip install --upgrade pynvim
 }
 
 packages
