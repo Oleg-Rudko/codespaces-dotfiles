@@ -6,7 +6,6 @@ ZSH_THEME="robbyrussell"
 plugins=(
  zsh-syntax-highlighting
  zsh-autosuggestions
- autojump
 )
 
 bindkey '^[[1;5D' backward-word
