@@ -1,52 +1,66 @@
 set encoding=UTF-8
 
-call plug#begin('~/.config/nvim/autoload/plug.vim')
+call plug#begin('~/.config/nvim/plugged')
 " Define bundles via Github repos
 Plug 'christoomey/vim-run-interactive'
-"vim 
+"vim
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'kana/vim-textobj-user'
-Plug 'mattn/emmet-vim'
-Plug 'mileszs/ack.vim'
-Plug 'preservim/nerdtree'
-Plug 'sheerun/vim-polyglot'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'mileszs/ack.vim' " Tha's for ack(search)
+Plug 'preservim/nerdtree' " Buffer for files
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight' " highlighting icons/files in buffer
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'sheerun/vim-polyglot' " For faster work in vim
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/tComment'
 "rails
-Plug 'ctrlpvim/ctrlp.vim/vim-rspec'
-Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'ctrlpvim/ctrlp.vim/vim-rspec' " For searching and open files Ctrl+P
 Plug 'thoughtbot/vim-rspec'
-Plug 'tpope/vim-rails'
-Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-rails' " For many rails stuff for example gf == go find
+Plug 'tpope/vim-sensible' " ...
 Plug 'vim-ruby/vim-ruby'
 "frontend
-Plug 'cristianoliveira/vim-react-html-snippets'
-Plug 'honza/vim-snippets'
-Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs' " authpairs
 Plug 'jparise/vim-graphql'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'mlaursen/vim-react-snippets'
+" Plug 'mlaursen/vim-react-snippets'
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'othree/yajs.vim'
-Plug 'pangloss/vim-javascript'
+" Plug 'othree/yajs.vim' not sure for what
+" Plug 'pangloss/vim-javascript' not sure for what
 Plug 'peitalin/vim-jsx-typescript'
 "icons && theme
-Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'luochen1990/rainbow'
-Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
 Plug 'ryanoasis/vim-devicons'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-Plug 'itchyny/lightline.vim'
-Plug 'stsewd/fzf-checkout.vim'
-
+Plug 'vim-airline/vim-airline'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'honza/vim-snippets'
+Plug 'mok-aster/rails-snippets'
 "theme
 " Plug 'tomasiser/vim-code-dark'
+" New things
+Plug 'tpope/vim-endwise' "help to finish end, def ... rails
+Plug 'tpope/vim-surround'
+
+"Rust
+Plug 'rust-lang/rust.vim'
+Plug 'dense-analysis/ale'
+
 call plug#end()
+
+"Rust
+let g:rust_clip_command = 'pbcopy'
+
+"for html snippets in rails erb
+" autocmd BufNewFile,BufRead *.html.erb set filetype=html
+
+"highlight debugging stuff so you don't miss it
+au BufEnter *.rb syn match error contained "\<binding.pry\>"
+
 
 "disabled arrow key
 nnoremap <Up> <NOP>
@@ -60,27 +74,16 @@ inoremap <PageDown> <NOP>
 nnoremap <Cmd> <NOP>
 inoremap <Cmd> <NOP>
 
-"code formatting ruby files
-let g:remove_extra_lines = 1
-
 "apply macros with Q
 nnoremap Q @q
 vnoremap Q :norm @q
 
-let g:tagalong_verbose = 1
-" " Tab
-" inoremap <Tab> <esc>la
-" inoremap <S-Tab> <esc>i
-
-"some preference 
+"delete node modules from buffer
 let g:NERDTreeIgnore = ['^node_modules$']
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " Leader key
 let mapleader = " "
-
-" save file
-nnoremap <leader><leader> :w<cr>
 
 "add word to spell checker
 vnoremap <leader>aw :CocCommand cSpell.addWordToUserDictionary<CR>
@@ -88,33 +91,24 @@ vnoremap <leader>aw :CocCommand cSpell.addWordToUserDictionary<CR>
 " quit file
 nnoremap <leader>q :q<cr>
 
-" quit esc
-inoremap jj <ESC>
-inoremap kk <ESC>
-
-" " Press enter when to import func or hoverbuffer
-" inoremap <silent><S-t> <C-n><C-y>
+" go to the next/prev characters
+imap <C-l> <right>
 
 "nerd tree mappings
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>gb :Git blame<CR>
-nnoremap <leader>gdi :Git difftool -y<CR>
-nnoremap <leader>gmt :Git mergetool -y<CR>
+autocmd VimEnter * NERDSnippetsDisable
 
-"quicker split movement
+"quicker split movement in normal mode
 nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
+nnoremap <C-k> <C-w>k
 
 "easier splits inside vim nnoremap <leader>w <C-w>v<C-w>l
 nnoremap <leader>h <C-w>s<C-w>j
 nnoremap <leader>w <C-w>v<C-w>l
-
-"shift left and right to cycle through tabs
-" noremap <S-l> gt
-" noremap <S-h> gT
 
 " fzf mappings
 nnoremap <c-p> :GFiles --cached --others --exclude-standard<cr>
@@ -123,6 +117,14 @@ nnoremap <c-p> :GFiles --cached --others --exclude-standard<cr>
 nnoremap <leader>a :Ack
 " leader k to search for the word under the cursor
 nnoremap <leader>k :Ack <C-R><C-W><CR>
+" We need to install rg -> brew install rg
+if executable('rg')
+    let g:ctrlp_user_command = 'rg --files %s'
+    let g:ctrlp_use_caching = 0
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_switch_buffer = 'et'
+endif
+
 "assign ripgrep to search for ack
 let g:ackprg = 'rg --vimgrep --no-heading'
 
@@ -132,7 +134,8 @@ map <Leader>t :call RunCurrentSpecFile()<CR>:redraw!<CR><CR>:!tmux select-window
 map <Leader>l :call RunLastSpec()<CR>:redraw!<CR><CR>:!tmux select-window -t spec<CR>
 map <Leader>* :call RunAllSpecs()<CR>:redraw!<CR><CR>:!tmux select-window -t spec<CR><CR> <CR>
 
-let g:rspec_command = "silent !tmux send-keys -t spec 'clear' C-m 'rspec {spec}' C-m"
+let g:rspec_command = "silent !tmux send-keys -t spec 'clear' C-m 'bundle exec spring rspec --format progress --order rand {spec}' C-m"
+" Phil dotfiles let g:rspec_command = ":silent !tmux send-keys -t spec 'clear' C-m 'bundle exec spring rspec --format progress --require ~/code/rspec_support/quickfix_formatter.rb --format QuickfixFormatter --out ~/quickfix.out --order rand {spec}' C-m"
 let g:rspec_runner = "os_x_iterm2"
 
 "tmux
@@ -148,7 +151,6 @@ map <S-t> <esc>:tabnew<CR>
 
 "shift direction to change tabs
 noremap <S-l> gt
-
 noremap <S-h> gT
 
 filetype plugin indent on
@@ -159,7 +161,8 @@ set tabstop=2
 set softtabstop=2
 " when indenting with '>', use 2 spaces width
 set shiftwidth=2
-
+" set clipboard=unnamedplus " copy to buffer
+map <leader>y "*y
 "scrolling speed
 set ttyfast
 
@@ -175,13 +178,15 @@ set nowritebackup
 set noswapfile
 
 "theme
+let g:gruvbox_contrast_dark="hard"
 colorscheme gruvbox
+
 " colorscheme codedark
 
 " Customizations
 set relativenumber
-" set number
-" set nocompatible
+set number
+set nocompatible
 set showmatch
 set ruler "show cursor position all the time
 set showcmd "display incomplete commands
@@ -197,13 +202,11 @@ set guioptions-=r       " No scrollbars
 set visualbell t_vb=    " Don't beep
 set hidden              " Don't prompt to save when switching buffers
 
-"javascript vars for vim-javascript
-let g:javascript_enable_domhtmlcss = 1
+" "javascript vars for vim-javascript
+" let g:javascript_enable_domhtmlcss = 1
 
 autocmd BufEnter *.{js,jsx,ts,tsx} :syntax sync fromstart
 autocmd BufLeave *.{js,jsx,ts,tsx} :syntax sync clear
-
-nnoremap <silent> K :call CocAction('doHover')<CR>
 
 let g:deoplete#enable_at_startup = 1
 
@@ -215,7 +218,6 @@ let $FZF_DEFAULT_OPTS='--reverse'
 " let g:fzf_tag_actions = {
 "       \ 'checkout': {'execute': '!{git} -C {cwd} checkout {branch}'},
 "       \}
-nnoremap <leader>gc :GCheckout<CR>
 
 "style the terminal
 let g:NERDTreeFileExtensionHighlightFullName = 1
@@ -225,33 +227,36 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:WebDevIconsDisableDefaultFolderSymbolColorFromNERDTreeDir = 1
 let g:WebDevIconsDisableDefaultFileSymbolColorFromNERDTreeFile = 1
 
-" Coc 
+" Coc
 let g:coc_global_extensions = [
       \ 'coc-css',
       \ 'coc-emmet',
-      \ 'coc-eslint', 
-      \ 'coc-git', 
-      \ 'coc-html', 
+      \ 'coc-eslint',
+      \ 'coc-git',
+      \ 'coc-html',
       \ 'coc-json',
-      \ 'coc-pairs', 
-      \ 'coc-prettier', 
+      \ 'coc-pairs',
+      \ 'coc-prettier',
       \ 'coc-snippets',
       \ 'coc-tslint-plugin',
       \ 'coc-tsserver',
-      \ 'coc-yaml',
       \ 'coc-highlight',
+      \ 'coc-yaml',
       \ 'coc-spell-checker',
-      \ 'coc-sql',
+      \ 'coc-dictionary',
+      \ 'coc-rust-analyzer',
       \ ]
 
 "CocCommand
-vmap <leader>p :CocCommand prettier.formatFile<CR> 
 nmap <leader>p :CocCommand prettier.formatFile<CR>
 nmap <leader>rn <Plug>(coc-rename)
-nmap <silent> gd <Plug>(coc-definition)
+nmap <silent>gd <Plug>(coc-definition)
+nmap <silent>gs <Plug>(coc-codeaction-selected)<CR>
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+" nnoremap <silent> K :call CocAction('doHover')<CR>
+
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -269,7 +274,7 @@ endfunction
 
 function! CheckIfCurrentBufferIsFile()
   return strlen(expand('%')) > 0
-endfunction 
+endfunction
 " Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
 " file, and we're not in vimdiff
 function! SyncTree()
@@ -295,13 +300,5 @@ function! ToggleTree()
 endfunction
 
 "size of bar
-:let g:NERDTreeWinSize=40
-
-" paths:
-" python for vim
-let g:python3_host_prog = '/usr/bin/python3'
-let g:python_host_prog = '/usr/bin/python2'
-"ruby neovim settings
-let g:ruby_host_prog = '~/.ruby/current/bin/neovim-ruby-host'
-
-
+:let g:NERDTreeWinSize=45
+let g:loaded_perl_provider = 0
