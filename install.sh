@@ -5,6 +5,7 @@
 
 
 clone_and_install() {
+  sudo apt update
   # tmux and neovim
   sudo apt-get install -y neovim
   sudo apt-get install -y tmux
