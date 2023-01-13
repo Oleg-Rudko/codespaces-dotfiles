@@ -7,8 +7,8 @@
 clone_and_install() {
   sudo apt update
   # tmux and neovim
-  sudo apt-get install tmux
-  sudo apt-get install neovim
+  sudo apt-get install -y tmux
+  sudo apt-get install -y neovim
 
   # install nvim cli for nvim +PlugInstall
   sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
