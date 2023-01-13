@@ -58,6 +58,7 @@ let g:rust_clip_command = 'pbcopy'
 "for html snippets in rails erb
 " autocmd BufNewFile,BufRead *.html.erb set filetype=html
 
+let g:coc_disable_startup_warning = 1
 "highlight debugging stuff so you don't miss it
 au BufEnter *.rb syn match error contained "\<binding.pry\>"
 
@@ -98,7 +99,7 @@ imap <C-l> <right>
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>gb :Git blame<CR>
-autocmd VimEnter * NERDSnippetsDisable
+" autocmd VimEnter * NERDSnippetsDisable
 
 "quicker split movement in normal mode
 nnoremap <C-j> <C-w>j
